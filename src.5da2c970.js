@@ -29,43 +29,43 @@ module.exports="placeholder.c3e3eda3.jpg";
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var a=require("./public/placeholder.jpg"),e=l(a);function l(a){return a&&a.__esModule?a:{default:a}}exports.default=[{name:"Wowa CC0",artist:"Wowa",albumCoverUrl:e.default},{name:"Bach Collection",artist:"...",albumCoverUrl:e.default},{name:"Wowa CC0",artist:"Wowa",albumCoverUrl:e.default},{name:"Bach Collection",artist:"...",albumCoverUrl:e.default},{name:"Wowa CC0",artist:"Wowa",albumCoverUrl:e.default},{name:"Bach Collection",artist:"...",albumCoverUrl:e.default},{name:"Wowa CC0",artist:"Wowa",albumCoverUrl:e.default},{name:"Bach Collection",artist:"...",albumCoverUrl:e.default}];
 },{"./public/placeholder.jpg":47}],8:[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var e=require("hyperapp"),i=require("picostyle"),t=a(i),r=require("../albums.js"),n=a(r);function a(e){return e&&e.__esModule?e:{default:e}}var o=(0,t.default)(e.h),u=function(){return o("header")({fontSize:"2em",maxWidth:"1100px",margin:"1em","@media (min-width: 1000px)":{fontSize:"3em"},"@media (min-width: 1250px)":{margin:"0 auto"}," .sub":{fontSize:"0.6em",marginTop:"-2em"}})({},[(0,e.h)("h1",null,"Flamous"),(0,e.h)("p",{class:"sub"},"The best of Public Domain music.")])},m=function(i){return o("div")({width:"100%",padding:"1em",boxSizing:"border-box",marginBottom:"6em"})({},(0,e.h)(d,null,i.data.map(function(i){return(0,e.h)(l,{image:i.albumCoverUrl,name:i.name,artist:i.artist})})))},d=o("div")({display:"flex",flexWrap:"wrap",maxWidth:"1250px",margin:"0 auto"}),l=function(i){return o("div")({color:"#212121",textAlign:"center",fontWeight:"bold",fontSize:"1.3em",padding:"1em",width:"50%",minWidth:"150px","@media (min-width: 1000px)":{width:"250px",maxWidth:"33%"},position:"relative",flexGrow:"1",boxSizing:"border-box"," .secondary":{marginTop:"-1em",color:"#848484"}})({},[(0,e.h)(h,{src:i.image}),(0,e.h)("p",null,i.name),(0,e.h)("p",{class:"secondary"},"by ",i.artist)])},h=function(e){return o("img")({width:"100%"})({src:e.src})},s=o("article")({height:"100%",width:"100%",overflowY:"auto",color:"#212121"}),p=function(){return(0,e.h)(s,null,(0,e.h)(u,null),(0,e.h)(m,{data:n.default}))};exports.default=p;
-},{"hyperapp":14,"picostyle":16,"../albums.js":27}],31:[function(require,module,exports) {
+},{"hyperapp":14,"picostyle":16,"../albums.js":27}],39:[function(require,module,exports) {
 module.exports="0.53438213.jpg";
-},{}],32:[function(require,module,exports) {
+},{}],40:[function(require,module,exports) {
 module.exports="1.3edc6a55.jpg";
-},{}],33:[function(require,module,exports) {
+},{}],41:[function(require,module,exports) {
 module.exports="2.b2e68ab5.jpg";
-},{}],34:[function(require,module,exports) {
+},{}],42:[function(require,module,exports) {
 module.exports="3.ffd80495.jpg";
-},{}],35:[function(require,module,exports) {
+},{}],43:[function(require,module,exports) {
 module.exports="4.a851981d.jpg";
-},{}],36:[function(require,module,exports) {
+},{}],44:[function(require,module,exports) {
 module.exports="5.1c5e51a3.jpg";
-},{}],37:[function(require,module,exports) {
+},{}],45:[function(require,module,exports) {
 module.exports="6.f574b1f2.jpg";
-},{}],38:[function(require,module,exports) {
+},{}],46:[function(require,module,exports) {
 module.exports="7.d8e08cbb.jpg";
 },{}],21:[function(require,module,exports) {
 module.exports={0:require("./0.jpg"),1:require("./1.jpg"),2:require("./2.jpg"),3:require("./3.jpg"),4:require("./4.jpg"),5:require("./5.jpg"),6:require("./6.jpg"),7:require("./7.jpg")};
-},{"./0.jpg":31,"./1.jpg":32,"./2.jpg":33,"./3.jpg":34,"./4.jpg":35,"./5.jpg":36,"./6.jpg":37,"./7.jpg":38}],39:[function(require,module,exports) {
+},{"./0.jpg":39,"./1.jpg":40,"./2.jpg":41,"./3.jpg":42,"./4.jpg":43,"./5.jpg":44,"./6.jpg":45,"./7.jpg":46}],31:[function(require,module,exports) {
 module.exports="0.066392c5.mp3";
-},{}],40:[function(require,module,exports) {
+},{}],32:[function(require,module,exports) {
 module.exports="1.5843185e.mp3";
-},{}],41:[function(require,module,exports) {
+},{}],33:[function(require,module,exports) {
 module.exports="2.f9612d35.mp3";
-},{}],42:[function(require,module,exports) {
+},{}],34:[function(require,module,exports) {
 module.exports="3.cc0b9d5a.mp3";
-},{}],43:[function(require,module,exports) {
+},{}],35:[function(require,module,exports) {
 module.exports="4.03b39c0c.mp3";
-},{}],44:[function(require,module,exports) {
+},{}],36:[function(require,module,exports) {
 module.exports="5.f6ce1701.mp3";
-},{}],45:[function(require,module,exports) {
+},{}],37:[function(require,module,exports) {
 module.exports="6.c3e61cbe.mp3";
-},{}],46:[function(require,module,exports) {
+},{}],38:[function(require,module,exports) {
 module.exports="7.a3d80b57.mp3";
 },{}],22:[function(require,module,exports) {
 module.exports={0:require("./0.mp3"),1:require("./1.mp3"),2:require("./2.mp3"),3:require("./3.mp3"),4:require("./4.mp3"),5:require("./5.mp3"),6:require("./6.mp3"),7:require("./7.mp3")};
-},{"./0.mp3":39,"./1.mp3":40,"./2.mp3":41,"./3.mp3":42,"./4.mp3":43,"./5.mp3":44,"./6.mp3":45,"./7.mp3":46}],6:[function(require,module,exports) {
+},{"./0.mp3":31,"./1.mp3":32,"./2.mp3":33,"./3.mp3":34,"./4.mp3":35,"./5.mp3":36,"./6.mp3":37,"./7.mp3":38}],6:[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0});var a=require("./public/128/*.jpg"),e=t(a),r=require("./public/songs/*.mp3"),u=t(r);function t(a){return a&&a.__esModule?a:{default:a}}exports.default=[{id:0,name:"Trumpets in Your Ears",artist:"Wowa & Chris Rede",album:"Wowa CC0",url:u.default[0],cover_art_url:e.default[0]},{id:1,name:"Pipo Interludo",artist:"Pipo & Wowa",album:"Wowa CC0",url:u.default[1],cover_art_url:e.default[1]},{id:2,name:"Blue Sky",artist:"Wowa & Chris Rede",album:"Wowa CC0",url:u.default[2],cover_art_url:e.default[2]},{id:3,name:"Voisin",artist:"Wowa",album:"Wowa CC0",url:u.default[3],cover_art_url:e.default[3]},{id:4,name:"Piratos",artist:"Wowa & Chris Rede",album:"Wowa CC0",url:u.default[4],cover_art_url:e.default[4]},{id:5,name:"Viviq",artist:"Wowa",album:"Wowa CC0",url:u.default[5],cover_art_url:e.default[5]},{id:6,name:"Kring",artist:"Wowa",album:"Wowa CC0",url:u.default[6],cover_art_url:e.default[6]},{id:7,name:"Just Cool",artist:"Wowa & eckskwisit",album:"Wowa CC0",url:u.default[7],cover_art_url:e.default[7]}];
 },{"./public/128/*.jpg":21,"./public/songs/*.mp3":22}],9:[function(require,module,exports) {
 module.exports="song_placeholder.f9344fc1.svg";
