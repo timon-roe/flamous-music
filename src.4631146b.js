@@ -11388,11 +11388,12 @@ function makeInteractive(element) {
 
   // Initial slide-in
   (0, _popmotion.spring)({
-    from: { x: '100%' },
-    to: { x: 0 },
+    from: '100%',
+    to: '0%',
     damping: 20,
     mass: 0.5
-  }).start(handleStyler.set);
+  }).start(handleX);
+
   var handleSub = void 0;
   // Swipe-mechanism
   (0, _popmotion.listen)(element, 'mousedown touchstart').start(function (e) {
@@ -11400,7 +11401,7 @@ function makeInteractive(element) {
       handleSub.unsubscribe();
     }
     var currentPointer = void 0;
-    currentPointer = (0, _popmotion.chain)((0, _popmotion.pointer)({ x: 0, y: 0 }), (0, _calc.smooth)(30)).start(function (_ref) {
+    currentPointer = (0, _popmotion.chain)((0, _popmotion.pointer)({ x: 0, y: 0, preventDefault: false }), (0, _calc.smooth)(30)).start(function (_ref) {
       var x = _ref.x,
           y = _ref.y;
 
@@ -11485,7 +11486,7 @@ var Page = function Page(props, children) {
 exports.default = Page;
 },{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","popmotion":"../node_modules/popmotion/dist/popmotion.es.js","popmotion/lib/transformers":"../node_modules/popmotion/lib/transformers.js","popmotion/lib/calc":"../node_modules/popmotion/lib/calc.js"}],"public/song_placeholder.svg":[function(require,module,exports) {
 module.exports = "/song_placeholder.8d83acaa.svg";
-},{}],"components/Gallery.js":[function(require,module,exports) {
+},{}],"components/Header.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11498,103 +11499,27 @@ var _picostyle = require('picostyle');
 
 var _picostyle2 = _interopRequireDefault(_picostyle);
 
-var _song_placeholder = require('../public/song_placeholder.svg');
-
-var _song_placeholder2 = _interopRequireDefault(_song_placeholder);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var style = (0, _picostyle2.default)(_hyperapp.h);
 
-var Gallery = function Gallery(props) {
-  return style('div')({
-    width: '100%',
-    padding: '1em',
-    boxSizing: 'border-box',
-    marginBottom: '6em'
-  })({}, (0, _hyperapp.h)(
-    FlexWrapper,
-    null,
-    props.data.map(function (item) {
-      return (0, _hyperapp.h)(Item, { image: item.cover_art_url || _song_placeholder2.default, name: item.name, artist: item.artist, onclick: function onclick() {
-          if (window.clickLock) return;window.flamous.addPage();
-        } });
-    })
-  ));
-};
-
-var FlexWrapper = style('div')({
-  display: 'flex',
-  flexWrap: 'wrap',
-  maxWidth: '1250px',
-  margin: '0 auto'
-});
-
-var Item = function Item(props) {
-  return style('div')({
-    color: '#212121',
-    textAlign: 'center',
+var Button = function Button(props) {
+  return style('span')({
     fontWeight: 'bold',
-    fontSize: '1.3em',
-    padding: '1em',
-    width: '50%',
-    minWidth: '150px',
-    // maxWidth: '250px',
-    '@media (min-width: 1000px)': {
-      width: '250px',
-      maxWidth: '33%'
-    },
-    position: 'relative',
-    flexGrow: '1',
-    boxSizing: 'border-box',
-    ' .secondary': {
-      marginTop: '-1em',
-      color: '#848484'
-    }
-  })(props, [(0, _hyperapp.h)(Cover, { src: props.image }), (0, _hyperapp.h)(
-    'p',
-    null,
-    props.name
-  ), (0, _hyperapp.h)(
-    'p',
-    { 'class': 'secondary' },
-    'by ',
-    props.artist
-  )]);
-};
-
-var Cover = function Cover(props) {
-  return style('img')({
-    width: '100%',
-    pointerEvents: 'none'
+    color: '#007AFF'
   })({
-    src: props.src
-  });
+    onclick: function onclick() {
+      return window.flamous.addPage(props.link);
+    }
+  }, props.text);
 };
-
-exports.default = Gallery;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","../public/song_placeholder.svg":"public/song_placeholder.svg"}],"components/Header.js":[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _hyperapp = require('hyperapp');
-
-var _picostyle = require('picostyle');
-
-var _picostyle2 = _interopRequireDefault(_picostyle);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = (0, _picostyle2.default)(_hyperapp.h);
 
 var Header = function Header(props, children) {
   return style('header')({
     fontSize: '2em',
     maxWidth: '1100px',
     margin: '1em',
+    textAlign: props.alignment === 'center' ? 'center' : 'left',
     '@media (min-width: 1000px)': {
       fontSize: '3em'
     },
@@ -11614,55 +11539,13 @@ var Header = function Header(props, children) {
   ), (0, _hyperapp.h)(
     'p',
     { 'class': 'sub' },
-    props.sub
+    props.sub,
+    props.button ? [(0, _hyperapp.h)('br', null), (0, _hyperapp.h)(Button, { text: props.button.text, link: props.button.link })] : ''
   )]);
 };
 
 exports.default = Header;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js"}],"components/Home.js":[function(require,module,exports) {
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _hyperapp = require('hyperapp');
-
-var _picostyle = require('picostyle');
-
-var _picostyle2 = _interopRequireDefault(_picostyle);
-
-var _albums = require('../albums.js');
-
-var _albums2 = _interopRequireDefault(_albums);
-
-var _Page = require('./Page.js');
-
-var _Page2 = _interopRequireDefault(_Page);
-
-var _Gallery = require('./Gallery.js');
-
-var _Gallery2 = _interopRequireDefault(_Gallery);
-
-var _Header = require('./Header.js');
-
-var _Header2 = _interopRequireDefault(_Header);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var style = (0, _picostyle2.default)(_hyperapp.h);
-
-var Home = function Home() {
-  return (0, _hyperapp.h)(
-    _Page2.default,
-    { nonInteractive: true },
-    (0, _hyperapp.h)(_Header2.default, { title: 'Flamous Music', sub: 'The best of Public Domain music.' }),
-    (0, _hyperapp.h)(_Gallery2.default, { data: _albums2.default })
-  );
-};
-
-exports.default = Home;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","../albums.js":"albums.js","./Page.js":"components/Page.js","./Gallery.js":"components/Gallery.js","./Header.js":"components/Header.js"}],"public/128/0.jpg":[function(require,module,exports) {
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js"}],"public/128/0.jpg":[function(require,module,exports) {
 module.exports = "/0.0abd2334.jpg";
 },{}],"public/128/1.jpg":[function(require,module,exports) {
 module.exports = "/1.21199a7a.jpg";
@@ -11814,7 +11697,219 @@ exports.default = [{
   // length: null,
   // currentPosition: null
 }];
-},{"./public/128/*.jpg":"public/128/*.jpg","./public/songs/*.mp3":"public/songs/*.mp3"}],"index.js":[function(require,module,exports) {
+},{"./public/128/*.jpg":"public/128/*.jpg","./public/songs/*.mp3":"public/songs/*.mp3"}],"components/Gallery.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _hyperapp = require('hyperapp');
+
+var _picostyle = require('picostyle');
+
+var _picostyle2 = _interopRequireDefault(_picostyle);
+
+var _song_placeholder = require('../public/song_placeholder.svg');
+
+var _song_placeholder2 = _interopRequireDefault(_song_placeholder);
+
+var _Header = require('./Header.js');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _songs = require('../songs.js');
+
+var _songs2 = _interopRequireDefault(_songs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var style = (0, _picostyle2.default)(_hyperapp.h);
+
+var Gallery = function Gallery(props) {
+  return style('div')({
+    width: '100%',
+    padding: '1em',
+    boxSizing: 'border-box',
+    marginBottom: '6em'
+  })({}, (0, _hyperapp.h)(
+    FlexWrapper,
+    null,
+    props.data.map(function (item) {
+      return (0, _hyperapp.h)(Item, { image: item.cover_art_url || _song_placeholder2.default, name: item.name, artist: item.artist, onclick: function onclick() {
+          if (window.clickLock) return;window.flamous.addPage([(0, _hyperapp.h)(_Header2.default, { title: 'Awesome' }), (0, _hyperapp.h)(Gallery, { data: _songs2.default })]);
+        } });
+    })
+  ));
+};
+
+var FlexWrapper = style('div')({
+  display: 'flex',
+  flexWrap: 'wrap',
+  maxWidth: '1250px',
+  margin: '0 auto'
+});
+
+var Item = function Item(props) {
+  return style('div')({
+    color: '#212121',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: '1.3em',
+    padding: '1em',
+    width: '50%',
+    minWidth: '150px',
+    // maxWidth: '250px',
+    '@media (min-width: 1000px)': {
+      width: '250px',
+      maxWidth: '33%'
+    },
+    position: 'relative',
+    flexGrow: '1',
+    boxSizing: 'border-box',
+    ' .secondary': {
+      marginTop: '-1em',
+      color: '#848484'
+    }
+  })(props, [(0, _hyperapp.h)(Cover, { src: props.image }), (0, _hyperapp.h)(
+    'p',
+    null,
+    props.name
+  ), (0, _hyperapp.h)(
+    'p',
+    { 'class': 'secondary' },
+    'by ',
+    props.artist
+  )]);
+};
+
+var Cover = function Cover(props) {
+  return style('img')({
+    width: '100%',
+    pointerEvents: 'none'
+  })({
+    src: props.src
+  });
+};
+
+exports.default = Gallery;
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","../public/song_placeholder.svg":"public/song_placeholder.svg","./Header.js":"components/Header.js","../songs.js":"songs.js"}],"elements/About.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _hyperapp = require('hyperapp');
+
+var _picostyle = require('picostyle');
+
+var _picostyle2 = _interopRequireDefault(_picostyle);
+
+var _Header = require('../components/Header.js');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var style = (0, _picostyle2.default)(_hyperapp.h);
+
+var Wrapper = style('div')({
+  margin: '0 auto',
+  maxWidth: '40em',
+  padding: '2em',
+  textAlign: 'center',
+  fontSize: '1.2em'
+});
+var About = function About() {
+  return [(0, _hyperapp.h)(_Header2.default, { title: 'About Flamous', alignment: 'center' }), (0, _hyperapp.h)(
+    Wrapper,
+    null,
+    (0, _hyperapp.h)(
+      'p',
+      null,
+      'Contact: ',
+      (0, _hyperapp.h)(
+        'a',
+        { href: 'mailto:hello@flamous.io' },
+        'hello@flamous.io'
+      )
+    ),
+    (0, _hyperapp.h)(
+      'p',
+      null,
+      'Free, public-domain music (CC0). Do whatever you want with it, it\'s free. Like, really. ',
+      (0, _hyperapp.h)(
+        'a',
+        { href: 'https://creativecommons.org/share-your-work/public-domain/', target: '_blank' },
+        'CC0'
+      ),
+      ' means that there is no copyright owner (\u201CNo Rights Reserved\u201D). The music is still credited to the original authors, but they do not own more copyrights than you do.'
+    ),
+    (0, _hyperapp.h)(
+      'p',
+      null,
+      'Pubic Domain music is the gift of awesome musicians who care about the creative impact of their work. You do not need to give any credit to the authors.'
+    ),
+    (0, _hyperapp.h)(
+      'p',
+      null,
+      'This is a project by ',
+      (0, _hyperapp.h)(
+        'a',
+        { href: 'https://www.christiankaindl.at/' },
+        'Christian Kaindl'
+      ),
+      ' and Timon R\xF6hrbacher.'
+    )
+  )];
+};
+
+exports.default = About;
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","../components/Header.js":"components/Header.js"}],"components/Home.js":[function(require,module,exports) {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _hyperapp = require('hyperapp');
+
+var _albums = require('../albums.js');
+
+var _albums2 = _interopRequireDefault(_albums);
+
+var _Page = require('./Page.js');
+
+var _Page2 = _interopRequireDefault(_Page);
+
+var _Gallery = require('./Gallery.js');
+
+var _Gallery2 = _interopRequireDefault(_Gallery);
+
+var _Header = require('./Header.js');
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _About = require('../elements/About.js');
+
+var _About2 = _interopRequireDefault(_About);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// const style = picostyle(h)
+
+var Home = function Home() {
+  return (0, _hyperapp.h)(
+    _Page2.default,
+    { nonInteractive: true },
+    (0, _hyperapp.h)(_Header2.default, { title: 'Flamous Music', sub: 'The best of Public Domain music.', button: { text: 'About Flamous >', link: (0, _hyperapp.h)(_About2.default, null) } }),
+    (0, _hyperapp.h)(_Gallery2.default, { data: _albums2.default })
+  );
+};
+// import picostyle from 'picostyle'
+exports.default = Home;
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","../albums.js":"albums.js","./Page.js":"components/Page.js","./Gallery.js":"components/Gallery.js","./Header.js":"components/Header.js","../elements/About.js":"elements/About.js"}],"index.js":[function(require,module,exports) {
 'use strict';
 
 var _hyperapp = require('hyperapp');
@@ -11847,15 +11942,10 @@ var _Page = require('./components/Page.js');
 
 var _Page2 = _interopRequireDefault(_Page);
 
-var _Gallery = require('./components/Gallery.js');
-
-var _Gallery2 = _interopRequireDefault(_Gallery);
-
-var _Header = require('./components/Header.js');
-
-var _Header2 = _interopRequireDefault(_Header);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// import Gallery from './components/Gallery.js'
+// import Header from './components/Header.js'
 
 // const Page = import('./components/Page.js')
 
@@ -12010,9 +12100,9 @@ var flamous = (0, _hyperapp.app)({
       }
     };
   },
-  addPage: function addPage() {
+  addPage: function addPage(page) {
     return function (state) {
-      state.pages.push([(0, _hyperapp.h)(_Header2.default, { title: 'Awesome' }), (0, _hyperapp.h)(_Gallery2.default, { data: _songs2.default })]);
+      state.pages.push(page);
       // console.log(state)
       return {
         pages: state.pages
@@ -12090,7 +12180,7 @@ if ('mediaSession' in navigator) {
 // }, 3000);
 
 window.flamous = flamous;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","amplitudejs":"../node_modules/amplitudejs/dist/amplitude.js","picostyle":"../node_modules/picostyle/src/index.js","./components/ScrubBar.js":"components/ScrubBar.js","./components/Home.js":"components/Home.js","./songs.js":"songs.js","./public/song_placeholder.svg":"public/song_placeholder.svg","./components/Page.js":"components/Page.js","./components/Gallery.js":"components/Gallery.js","./components/Header.js":"components/Header.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","amplitudejs":"../node_modules/amplitudejs/dist/amplitude.js","picostyle":"../node_modules/picostyle/src/index.js","./components/ScrubBar.js":"components/ScrubBar.js","./components/Home.js":"components/Home.js","./songs.js":"songs.js","./public/song_placeholder.svg":"public/song_placeholder.svg","./components/Page.js":"components/Page.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -12119,7 +12209,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '32795' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '32885' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
