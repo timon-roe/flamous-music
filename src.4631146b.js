@@ -11207,7 +11207,7 @@ var Bubble = style('div')(function (props) {
     backgroundColor: props.playingState ? '#fce9c7' : '#fcfcff',
     transition: 'background-color 100ms',
     borderRadius: '20px',
-    border: '1px solid rgba(0, 0, 0, 0.1)',
+    border: props.playingState ? '1px solid rgb(239, 197, 124)' : '1px solid #eee',
     width: '100%',
     maxWidth: '400px',
     padding: '0.4em',
@@ -11239,7 +11239,6 @@ var SongCover = style('img')({
   height: '100%',
   borderRadius: '15px',
   boxSizing: 'border-box',
-  border: '1px solid rgba(0, 0, 0, 0.16)',
   pointerEvents: 'none'
 });
 
@@ -11364,6 +11363,8 @@ var _popmotion = require('popmotion');
 
 var _transformers = require('popmotion/lib/transformers');
 
+var _calc = require('popmotion/lib/calc');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var style = (0, _picostyle2.default)(_hyperapp.h);
@@ -11372,11 +11373,13 @@ function makeInteractive(element) {
   element.style.transform = 'translateX(100%)';
 
   var AXIS_LOCK_THRESHOLD = 15;
+  var isAxisLocked = false;
   var handleStyler = (0, _popmotion.styler)(element);
   var handleX = (0, _popmotion.value)(0, handleStyler.set('x'));
 
   var pointerX = function pointerX() {
-    return (0, _popmotion.pointer)({ x: 0 }).pipe(function (val) {
+    var preventDefault = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+    return (0, _popmotion.pointer)({ x: 0, preventDefault: preventDefault }).pipe(function (val) {
       return val.x;
     }).filter(function (x) {
       return x > 0;
@@ -11390,39 +11393,73 @@ function makeInteractive(element) {
     damping: 20,
     mass: 0.5
   }).start(handleStyler.set);
-  var stopP2 = void 0;
+  var handleSub = void 0;
   // Swipe-mechanism
   (0, _popmotion.listen)(element, 'mousedown touchstart').start(function (e) {
-    var stopPointer = pointerX().start(function (x) {
-      if (Math.abs(x) <= AXIS_LOCK_THRESHOLD) return;
+    if (handleX.get() > 0) {
+      handleSub.unsubscribe();
+    }
+    var currentPointer = void 0;
+    currentPointer = (0, _popmotion.chain)((0, _popmotion.pointer)({ x: 0, y: 0 }), (0, _calc.smooth)(30)).start(function (_ref) {
+      var x = _ref.x,
+          y = _ref.y;
+
+      if (Math.abs(y) >= AXIS_LOCK_THRESHOLD && !isAxisLocked) {
+        currentPointer.stop();
+        upListener.stop();
+        isAxisLocked = false;
+        return;
+      }
+      if (Math.abs(x) <= AXIS_LOCK_THRESHOLD) {
+        return;
+      }
 
       window.clickLock = true;
-      stopPointer.stop();
-      stopP2 = pointerX().start(handleX);
+      isAxisLocked = true;
+      currentPointer.stop();
+
+      currentPointer = (0, _popmotion.chain)(pointerX(true), (0, _calc.smooth)(30)).start(handleX);
     });
 
-    var upListener = (0, _popmotion.listen)(document, 'mouseup touchend').start(function (e) {
-      upListener.stop();
-      stopPointer.stop();
-      stopP2.stop();
-      var snapper = (0, _transformers.snap)([0, document.body.clientWidth * 1.1]);
-      var pos = handleX.get();
-      var velocity = handleX.getVelocity();
+    var upListener = (0, _popmotion.listen)(element, 'mouseup touchend').start(function (e) {
+      if (!isAxisLocked) {
+        currentPointer.stop();
+        upListener.stop();
+        return;
+      }
 
-      (0, _popmotion.spring)({
-        from: pos,
-        to: snapper(pos + velocity),
-        damping: 20,
-        mass: 0.5,
-        velocity: velocity
-      }).start({
-        update: function update(val) {
-          return handleStyler.set('x', val);
-        },
-        complete: function complete() {
+      isAxisLocked = false;
+      upListener.stop();
+      currentPointer.stop();
+
+      var currentPos = handleX.get();
+      var velocity = handleX.getVelocity();
+      var isGoingBack = Boolean(!(0, _transformers.snap)([0, document.body.clientWidth / 1.5])(currentPos + velocity));
+      var pageWidth = document.body.clientWidth;
+
+      handleSub = handleX.subscribe(function (val) {
+        console.log(val);
+        if (val >= pageWidth) {
+          console.log('Way to often: ', val);
+          handleSub.unsubscribe();
+          window.clickLock = false;
+          stopSpring();
+
+          window.flamous.killPage();
+        } else if (val === 0) {
+          handleSub.unsubscribe();
           window.clickLock = false;
         }
       });
+
+      var _spring$start = (0, _popmotion.spring)({
+        from: currentPos,
+        to: !isGoingBack ? pageWidth * 1.2 : 0,
+        damping: 20,
+        mass: 0.5,
+        velocity: velocity
+      }).start(handleX),
+          stopSpring = _spring$start.stop;
     });
   });
 }
@@ -11446,7 +11483,7 @@ var Page = function Page(props, children) {
 };
 
 exports.default = Page;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","popmotion":"../node_modules/popmotion/dist/popmotion.es.js","popmotion/lib/transformers":"../node_modules/popmotion/lib/transformers.js"}],"public/song_placeholder.svg":[function(require,module,exports) {
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","popmotion":"../node_modules/popmotion/dist/popmotion.es.js","popmotion/lib/transformers":"../node_modules/popmotion/lib/transformers.js","popmotion/lib/calc":"../node_modules/popmotion/lib/calc.js"}],"public/song_placeholder.svg":[function(require,module,exports) {
 module.exports = "/song_placeholder.8d83acaa.svg";
 },{}],"components/Gallery.js":[function(require,module,exports) {
 'use strict';
@@ -11469,7 +11506,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var style = (0, _picostyle2.default)(_hyperapp.h);
 
-console.log('hadsf');
 var Gallery = function Gallery(props) {
   return style('div')({
     width: '100%',
@@ -11976,9 +12012,17 @@ var flamous = (0, _hyperapp.app)({
   },
   addPage: function addPage() {
     return function (state) {
-      console.log('DID SHIT');
       state.pages.push([(0, _hyperapp.h)(_Header2.default, { title: 'Awesome' }), (0, _hyperapp.h)(_Gallery2.default, { data: _songs2.default })]);
-      console.log(state);
+      // console.log(state)
+      return {
+        pages: state.pages
+      };
+    };
+  },
+  killPage: function killPage() {
+    return function (state) {
+      state.pages.pop();
+
       return {
         pages: state.pages
       };
@@ -11998,7 +12042,7 @@ var flamous = (0, _hyperapp.app)({
     null,
     (0, _hyperapp.h)(_Home2.default, null),
     pages.map(function (item) {
-      console.log(item);return (0, _hyperapp.h)(
+      return (0, _hyperapp.h)(
         _Page2.default,
         null,
         item
@@ -12075,7 +12119,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '42653' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '32795' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
