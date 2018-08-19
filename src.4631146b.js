@@ -11298,8 +11298,8 @@ var ScrubBar = function ScrubBar(props) {
 };
 
 exports.default = ScrubBar;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","popmotion":"../node_modules/popmotion/dist/popmotion.es.js","popmotion/lib/transformers":"../node_modules/popmotion/lib/transformers.js","popmotion/lib/calc":"../node_modules/popmotion/lib/calc.js"}],"public/placeholder.jpg":[function(require,module,exports) {
-module.exports = "/placeholder.7de1884c.jpg";
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","picostyle":"../node_modules/picostyle/src/index.js","popmotion":"../node_modules/popmotion/dist/popmotion.es.js","popmotion/lib/transformers":"../node_modules/popmotion/lib/transformers.js","popmotion/lib/calc":"../node_modules/popmotion/lib/calc.js"}],"public/500/2.jpg":[function(require,module,exports) {
+module.exports = "/2.b627de03.jpg";
 },{}],"albums.js":[function(require,module,exports) {
 'use strict';
 
@@ -11307,46 +11307,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _placeholder = require('./public/placeholder.jpg');
+var _ = require('./public/500/2.jpg');
 
-var _placeholder2 = _interopRequireDefault(_placeholder);
+var _2 = _interopRequireDefault(_);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = [{
   name: 'Wowa CC0',
   artist: 'Wowa',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Bach Collection',
-  artist: '...',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Wowa CC0',
-  artist: 'Wowa',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Bach Collection',
-  artist: '...',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Wowa CC0',
-  artist: 'Wowa',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Bach Collection',
-  artist: '...',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Wowa CC0',
-  artist: 'Wowa',
-  cover_art_url: _placeholder2.default
-}, {
-  name: 'Bach Collection',
-  artist: '...',
-  cover_art_url: _placeholder2.default
+  cover_art_url: _2.default
 }];
-},{"./public/placeholder.jpg":"public/placeholder.jpg"}],"components/Page.js":[function(require,module,exports) {
+},{"./public/500/2.jpg":"public/500/2.jpg"}],"components/Page.js":[function(require,module,exports) {
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -11737,7 +11709,11 @@ var Gallery = function Gallery(props) {
     null,
     props.data.map(function (item) {
       return (0, _hyperapp.h)(Item, { image: item.cover_art_url || _song_placeholder2.default, name: item.name, artist: item.artist, onclick: function onclick() {
-          if (window.clickLock) return;window.flamous.addPage([(0, _hyperapp.h)(_Header2.default, { title: 'Awesome' }), (0, _hyperapp.h)(Gallery, { data: _songs2.default })]);
+          console.log(props);if (props.onclick) {
+            props.onclick();
+          } else {
+            if (window.clickLock) return;console.log(item.id);window.Amplitude.playSongAtIndex(item.id);
+          }
         } });
     })
   ));
@@ -11895,21 +11871,28 @@ var _About = require('../elements/About.js');
 
 var _About2 = _interopRequireDefault(_About);
 
+var _songs = require('../songs');
+
+var _songs2 = _interopRequireDefault(_songs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // const style = picostyle(h)
 
+// import picostyle from 'picostyle'
 var Home = function Home() {
   return (0, _hyperapp.h)(
     _Page2.default,
     { nonInteractive: true },
     (0, _hyperapp.h)(_Header2.default, { title: 'Flamous Music', sub: 'The best of Public Domain music.', button: { text: 'About Flamous >', link: (0, _hyperapp.h)(_About2.default, null) } }),
-    (0, _hyperapp.h)(_Gallery2.default, { data: _albums2.default })
+    (0, _hyperapp.h)(_Gallery2.default, { data: _albums2.default, onclick: function onclick() {
+        if (window.clickLock) return;window.flamous.addPage([(0, _hyperapp.h)(_Header2.default, { title: 'Wowa', sub: 'Free music by Wowa (www.wowa.me)' }), (0, _hyperapp.h)(_Gallery2.default, { data: _songs2.default })]);
+      } })
   );
 };
-// import picostyle from 'picostyle'
+
 exports.default = Home;
-},{"hyperapp":"../node_modules/hyperapp/src/index.js","../albums.js":"albums.js","./Page.js":"components/Page.js","./Gallery.js":"components/Gallery.js","./Header.js":"components/Header.js","../elements/About.js":"elements/About.js"}],"index.js":[function(require,module,exports) {
+},{"hyperapp":"../node_modules/hyperapp/src/index.js","../albums.js":"albums.js","./Page.js":"components/Page.js","./Gallery.js":"components/Gallery.js","./Header.js":"components/Header.js","../elements/About.js":"elements/About.js","../songs":"songs.js"}],"index.js":[function(require,module,exports) {
 'use strict';
 
 var _hyperapp = require('hyperapp');
@@ -12030,6 +12013,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // console.info(ScrubBar)
 // app(state, actions, view, document.body)
+
+window.Amplitude = _amplitudejs2.default;
 
 var style = (0, _picostyle2.default)(_hyperapp.h);
 
@@ -12209,7 +12194,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '32885' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '44907' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
